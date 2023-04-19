@@ -28,7 +28,7 @@ export default function Home() {
 				console.error(error);
 			});
 	}, [auth.currentUser.uid]);
-	
+
 	const handleSignOut = async () => {
 		try {
 			await signOut(auth);
