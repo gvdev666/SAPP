@@ -29,13 +29,13 @@ import { AuthContext } from "../../../../kernel/components/authcontext/AuthConte
 import { validateEmail } from "../../../../kernel/validation";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function Login({ onSubmit }) {
   const { isAuth, setAuth } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const { user, dispatch } = useContext(AuthContext);
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const payLoad = { email: "", password: "" };
   const [error, setError] = useState(payLoad);
   const [data, setData] = useState(payLoad);
@@ -46,32 +46,37 @@ export default function Login({ onSubmit }) {
   };
 
   const login = async () => {
+
     if (!(isEmpty(data.email) || isEmpty(data.password))) {
-      //   try {
-      //     const response = await axios.doPost(
-      //       "http://192.168.0.116:8090/api_sirid/auth/login",
-      //       {
-      //         email: data.email
-      //       }
-      //     );
+        try {
+          const response = await fetch('http://localhost:8080/api_sirid/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: data.email,
+              password: data.password
+            })
+          });
 
-      //     const { token, role } = response.data;
+          const { token, role } = response.data;
 
-      //     if (role === "SuperAdmin") {
-      //       navigation.navigate('Home', {token})
-      //     } else if (role === "Docente") {
-      //       navigation.navigate('HomeDocente', {token})
-      //     }else if (role === "Docente") {
-      //       navigation.navigate('HomeSoporte', {token})
-      //     } else{
-      //       Alert.alert(
-      //         'Error',
-      //         'no se puee loggear'
-      //       )
-      //     }
-      //   } catch (error) {
-      //       setError('Datos incorrectos')
-      //   }
+          if (role === "SuperAdmin") {
+            navigation.navigate('Home', {token})
+          } else if (role === "Docente") {
+            navigation.navigate('HomeDocente', {token})
+          }else if (role === "Docente") {
+            navigation.navigate('HomeSoporte', {token})
+          } else{
+            Alert.alert(
+              'Error',
+              'no se puee loggear'
+            )
+          }
+        } catch (error) {
+            setError('Datos incorrectos')
+        }
 
       console.log("primera entrada");
       setShow(true);
@@ -126,7 +131,7 @@ export default function Login({ onSubmit }) {
     if (!isEmpty(data.email || isEmpty(data.password))) {
       if (validateEmail(data.email)) {
         console.log("entra aca");
-        if (size(data.password) >= 6) {
+        if ((data.password.length) >= 6) {
           console.log("tambien aqui");
           setShow(true);
           setError(payLoad);
@@ -253,6 +258,7 @@ export default function Login({ onSubmit }) {
   });
 
 
+
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <Image source={backImage} style={styles.backImage} />
@@ -276,16 +282,17 @@ export default function Login({ onSubmit }) {
           errorMessage={error}
         />
         <TextInput
+        
           style={styles.input}
           placeholder="Contraseña"
           containerStyle={styles.input}
           rightIcon={
             <Icon
-              name={showPassword ? "eye-slash" : "eye"}
-              type="font-awesome"
-              onPress={() => setShowPassword(!showPassword)}
-              size={22}
-            />
+            name={showPassword ? "eye-slash" : "eye"}
+            type={FontAwesome}
+            onPress={() => setShowPassword(!showPassword)}
+            size={22}
+          />
           }
           secureTextEntry={showPassword}
           onChange={(e) => changePayload(e, "password")}

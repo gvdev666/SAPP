@@ -13,6 +13,22 @@ export default function Home() {
 	const [division, serDivision] = useState ('Division Academica:');
 	const [cargo, setCargo] = useState('Administrador');
 	const auth = getAuth();
+
+	useEffect(() => {
+		// Obtiene los datos del usuario de la API usando el ID del usuario
+		fetch(`http://localhost:8080/api_sirid/${auth.currentUser.uid}`)
+			.then(response => response.json())
+			.then(data => {
+				// Actualiza los estados con los datos del usuario
+				setUsername(data.name + ' ' + data.primer_apellido + ' ' + data.segundo_apellido);
+				setDivision('Division Academica: ' + data.division);
+				setCargo(data.cargo);
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}, [auth.currentUser.uid]);
+
 	const handleSignOut = async () => {
 		try {
 			await signOut(auth);

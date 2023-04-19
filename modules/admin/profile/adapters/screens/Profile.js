@@ -12,7 +12,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Card } from "react-native-elements";
 import { CardDivider } from "@rneui/base/dist/Card/Card.Divider";
 import { Button, Icon } from "@rneui/themed";
+import {HistorialIncidencias} from './HistorialIncidencias';
 const backImage = require("../../../../../assets/backImage.png");
+
+
 export default function NavigationAdmin(navigation) {
   return (
     <KeyboardAwareScrollView style={styles.container}>
@@ -83,6 +86,9 @@ export default function NavigationAdmin(navigation) {
             />
           </View>
         </Card>
+        <TouchableOpacity onPress={navigation.navigete("HistorialIncidencias")} style={styles.floatingButton}>
+        <Icon name="plus" type="material-community" color="#fff" size={32} />
+      </TouchableOpacity>
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
     </KeyboardAwareScrollView>
@@ -138,5 +144,17 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 20,
     color: "#008f71",
+  },
+  floatingButton: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+    backgroundColor: '#26A69A',
+    borderRadius: 50,
+    width: 64,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 8,
   },
 });
