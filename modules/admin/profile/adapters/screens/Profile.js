@@ -13,6 +13,8 @@ import { Card } from "react-native-elements";
 import { CardDivider } from "@rneui/base/dist/Card/Card.Divider";
 import { Button, Icon } from "@rneui/themed";
 const backImage = require("../../../../../assets/backImage.png");
+
+
 export default function NavigationAdmin(navigation) {
   return (
     <KeyboardAwareScrollView style={styles.container}>
