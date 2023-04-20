@@ -5,7 +5,7 @@ const IncidenceList = () => {
   const [incidences, setIncidences] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost/api-sirid/incidence')
+    fetch('http://localhost:8080/api-sirid/incidence')
       .then(response => response.json())
       .then(data => setIncidences(data))
       .catch(error => console.error(error));
